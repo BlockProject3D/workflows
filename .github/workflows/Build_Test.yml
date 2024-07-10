@@ -1,0 +1,30 @@
+on:
+  workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+jobs:
+  test-build:
+    name: Build & Test
+    strategy:
+      matrix:
+        os:
+          - ubuntu-20.04
+          - macos-11
+          - windows-2019
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Build
+        run: cargo build --all-features
+      - name: Test
+        uses: bp3d-actions/cargo@main
+        with:
+          check-name: cargo test (${{ matrix.os }})
+          command: test
+          args: --all-features --no-fail-fast
+          token: ${{ secrets.GITHUB_TOKEN }}
