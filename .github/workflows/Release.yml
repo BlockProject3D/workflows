@@ -1,5 +1,9 @@
 on:
   workflow_call:
+    inputs:
+      cwd:
+        type: string
+        required: false
     secrets:
       RELEASE_TOKEN:
         required: true
@@ -23,6 +27,7 @@ jobs:
         with:
           mode: get
           token: ${{ secrets.GITHUB_TOKEN }}
+          cwd: ${{ inputs.cwd }}
 
   create-pre-release:
     name: Create Pre Release
@@ -37,7 +42,11 @@ jobs:
       - name: Setup cargo
         run: cargo login ${{ secrets.RELEASE_TOKEN }}
       - name: Publish
-        run: cargo publish
+        uses: bp3d-actions/cargo-release@main
+        with:
+          mode: publish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          cwd: ${{ inputs.cwd }}
       - name: Create
         uses: ncipollo/release-action@main
         with:
@@ -50,7 +59,7 @@ jobs:
   create-release-pr:
     name: Create Release Pull Request
     needs: version
-    if: needs.version.outputs.isnew == 'true' && needs.version.outputs.ispre == 'false'
+    if: github.ref == 'refs/heads/develop' && needs.version.outputs.isnew == 'true' && needs.version.outputs.ispre == 'false'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
