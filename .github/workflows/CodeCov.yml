@@ -24,6 +24,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Yuri6037/lcov2cobertura
+          path: lcov2cobertura
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
