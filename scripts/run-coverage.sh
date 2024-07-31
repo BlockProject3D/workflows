@@ -9,5 +9,5 @@ rust-cov export $1 -instr-profile=default.profdata --format=lcov > default.lcov
 rm -f default.profdata
 
 ./lcov2cobertura/target/debug/lcov2xml -d default.lcov
-mv coverage.xml "$1.xml"
+mv coverage.xml "$1.coverage.xml"
 rm -f default.lcov
