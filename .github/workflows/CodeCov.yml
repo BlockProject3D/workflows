@@ -33,7 +33,7 @@ jobs:
           cd lcov2cobertura && cargo build
           cargo install cargo-binutils
           curl -o $PWD/run-coverage.sh https://raw.githubusercontent.com/bp3d-actions/workflows/master/scripts/run-coverage.sh
-          chmod +x $PWD/run-coverage.sh
+          chmod 755 $PWD/run-coverage.sh
       - name: Build
         run: RUSTFLAGS="-C instrument-coverage" cargo build --all-features
       - name: Run Tests
