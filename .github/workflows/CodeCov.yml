@@ -1,0 +1,47 @@
+on:
+  workflow_call:
+    inputs:
+      binpath:
+        type: string
+        required: true
+    secrets:
+      CODECOV_TOKEN:
+        required: true
+
+jobs:
+  test-build:
+    name: Build & Test
+    strategy:
+      matrix:
+        os:
+          - ubuntu-20.04
+          - macos-12
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Checkout cobertura converter tool
+        uses: actions/checkout@v4
+        with:
+          repository: Yuri6037/lcov2cobertura
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: llvm-tools
+      - name: Install coverage tools
+        run: |
+          cd lcov2cobertura && cargo build
+          cargo install cargo-binutils
+          curl -o $PWD/run-coverage.sh https://raw.githubusercontent.com/bp3d-actions/workflows/master/scripts/run-coverage.sh
+          chmod +x $PWD/run-coverage.sh
+      - name: Build
+        run: RUSTFLAGS="-C instrument-coverage" cargo build --all-features
+      - name: Run Tests
+        run: RUSTFLAGS="-C instrument-coverage" cargo test --all-features
+      - name: Run coverage
+        run: find ${{ inputs.binpath }} -maxdepth 1 -type f -perm -u+x -exec $PWD/run-coverage.sh {} \;
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          directory: ${{ inputs.binpath }}
+          token: ${{ secrets.CODECOV_TOKEN }}
