@@ -30,7 +30,7 @@ jobs:
           components: llvm-tools
       - name: Install coverage tools
         run: |
-          cd lcov2cobertura && cargo build
+          cd lcov2cobertura && cargo build && cd ..
           cargo install cargo-binutils
           curl -o $PWD/run-coverage.sh https://raw.githubusercontent.com/bp3d-actions/workflows/master/scripts/run-coverage.sh
           chmod 755 $PWD/run-coverage.sh
