@@ -21,7 +21,7 @@ jobs:
       - name: Install coverage tools
         run: cargo install cargo-llvm-cov
       - name: Build and test with coverage
-        run: cargo llvm-cov --include-build-script --doctests --branch --show-mcdc --all-features --workspace --html
+        run: cargo llvm-cov --include-build-script --doctests --branch --all-features --workspace --html
       - name: Upload coverage
         uses: actions/upload-artifact@v4
         with:
