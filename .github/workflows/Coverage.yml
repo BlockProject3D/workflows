@@ -1,0 +1,29 @@
+on:
+  workflow_call:
+
+jobs:
+  coverage:
+    name: Coverage
+    strategy:
+      matrix:
+        os:
+          - ubuntu-20.04
+          - macos-12
+          - windows-2019
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: llvm-tools
+      - name: Install coverage tools
+        run: cargo install cargo-llvm-cov
+      - name: Build and test with coverage
+        run: cargo llvm-cov --include-build-script --doctests --all-features --workspace --html
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: target/llvm-cov/html
