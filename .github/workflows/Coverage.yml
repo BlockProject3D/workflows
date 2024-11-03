@@ -29,5 +29,23 @@ jobs:
           path: target/llvm-cov/html
   deploy:
     name: Deploy
-    needs:
-      - coverage
+    needs: coverage
+    if: github.ref == 'refs/heads/develop'
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: coverage
+      - name: Upload web archive
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: coverage
+      - name: Deploy pages
+        uses: actions/deploy-pages@v4
