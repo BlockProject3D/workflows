@@ -8,7 +8,7 @@ jobs:
       matrix:
         os:
           - ubuntu-20.04
-          - macos-12
+          - macos-13
           - windows-2019
     runs-on: ${{ matrix.os }}
     steps:
@@ -27,3 +27,7 @@ jobs:
         with:
           name: coverage-${{ matrix.os }}
           path: target/llvm-cov/html
+  deploy:
+    name: Deploy
+    needs:
+      - coverage
