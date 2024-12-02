@@ -53,6 +53,13 @@ jobs:
             python3 ../parse_coverage_report.py coverage-windows-2019 "Windows 2019" >> ../coverage.md
             python3 ../parse_coverage_report.py coverage-macos-13 "macOS 13" >> ../coverage.md
             cd ..
+      - name: Upload web archive
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: coverage
+      - name: Deploy pages
+        id: deployment
+        uses: actions/deploy-pages@v4
       - name: Upload coverage summary
         uses: bp3d-actions/checks-action@main
         with:
@@ -62,9 +69,3 @@ jobs:
             output: |
                 {"summary":"[<img src=\"${{ steps.deployment.outputs.page_url }}/coverage-macos-13.svg\">](${{ steps.deployment.outputs.page_url }}/coverage-macos-13)[<img src=\"${{ steps.deployment.outputs.page_url }}/coverage-ubuntu-20.04.svg\">](${{ steps.deployment.outputs.page_url }}/coverage-ubuntu-20.04)[<img src=\"${{ steps.deployment.outputs.page_url }}/coverage-windows-2019.svg\">](${{ steps.deployment.outputs.page_url }}/coverage-windows-2019)"}
             output_text_description_file: coverage.md
-      - name: Upload web archive
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: coverage
-      - name: Deploy pages
-        uses: actions/deploy-pages@v4
