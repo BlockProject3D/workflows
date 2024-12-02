@@ -85,7 +85,7 @@ def get_badge_url(coverage, platform):
         color = "red"
     name = "Coverage (" + platform + ")"
     name = name.replace(" ", "%20")
-    text = urllib.parse.quote_plus(str(value) + "%")
+    text = urllib.parse.quote_plus(("%.2f" % value) + "%")
     url = "https://badgen.net/static/" + name + "/" + text + "/" + color + "?icon=codecov"
     return url
 
@@ -103,7 +103,7 @@ if coverage.get(COVERAGE_REGION) is not None:
     print("| Region coverage   |", ("%4.2f %%" % coverage.get(COVERAGE_REGION)) + "  |")
 if coverage.get(COVERAGE_BRANCH) is not None:
     print("| Branch coverage   |", ("%4.2f %%" % coverage.get(COVERAGE_BRANCH)) + "  |")
-print("| **Total**         |", ("%4.2f %%" % coverage.get_total()) + "  |")
+print("| **Average**       |", ("%4.2f %%" % coverage.get_total()) + "  |")
 print("")
 
 download_badge(get_badge_url(coverage, platform), platform)
