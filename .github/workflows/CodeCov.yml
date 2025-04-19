@@ -3,7 +3,7 @@ on:
     inputs:
       os:
         type: string
-        default: "ubuntu-20.04"
+        default: "ubuntu-22.04"
     secrets:
       CODECOV_TOKEN:
         required: true
