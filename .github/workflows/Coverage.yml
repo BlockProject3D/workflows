@@ -52,7 +52,7 @@ jobs:
             wget https://raw.githubusercontent.com/bp3d-actions/workflows/main/parse_coverage_report.py
             cd coverage
             python3 ../parse_coverage_report.py coverage-ubuntu-22.04 "Ubuntu 22.04" >> ../coverage.md
-            python3 ../parse_coverage_report.py coverage-windows-2019 "Windows 2019" >> ../coverage.md
+            python3 ../parse_coverage_report.py coverage-windows-2022 "Windows 2022" >> ../coverage.md
             python3 ../parse_coverage_report.py coverage-macos-13 "macOS 13" >> ../coverage.md
             cd ..
       - name: Upload web archive
@@ -69,5 +69,5 @@ jobs:
             name: coverage
             conclusion: ${{ job.status }}
             output: |
-                {"summary":"[<img src=\"${{ steps.deployment.outputs.page_url }}/coverage-macos-13.svg\">](${{ steps.deployment.outputs.page_url }}/coverage-macos-13)[<img src=\"${{ steps.deployment.outputs.page_url }}/coverage-ubuntu-22.04.svg\">](${{ steps.deployment.outputs.page_url }}/coverage-ubuntu-22.04)[<img src=\"${{ steps.deployment.outputs.page_url }}/coverage-windows-2019.svg\">](${{ steps.deployment.outputs.page_url }}/coverage-windows-2019)"}
+                {"summary":"[<img src=\"${{ steps.deployment.outputs.page_url }}/coverage-macos-13.svg\">](${{ steps.deployment.outputs.page_url }}/coverage-macos-13)[<img src=\"${{ steps.deployment.outputs.page_url }}/coverage-ubuntu-22.04.svg\">](${{ steps.deployment.outputs.page_url }}/coverage-ubuntu-22.04)[<img src=\"${{ steps.deployment.outputs.page_url }}/coverage-windows-2022.svg\">](${{ steps.deployment.outputs.page_url }}/coverage-windows-2022)"}
             output_text_description_file: coverage.md
