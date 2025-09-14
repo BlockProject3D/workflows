@@ -1,5 +1,9 @@
 on:
   workflow_call:
+    inputs:
+      rust_components:
+        required: false
+        type: string
 
 jobs:
   coverage:
@@ -19,7 +23,7 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@nightly
         with:
-          components: llvm-tools
+          components: llvm-tools ${{ inputs.rust_components }}
       - name: Install coverage tools
         run: cargo install cargo-llvm-cov
       - name: Build and test with coverage

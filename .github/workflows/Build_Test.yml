@@ -1,5 +1,9 @@
 on:
   workflow_call:
+    inputs:
+      rust_components:
+        required: false
+        type: string
 
 jobs:
   test-build:
@@ -18,6 +22,8 @@ jobs:
           submodules: recursive
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
+        with:
+          components: ${{ inputs.rust_components }}
       - name: Build
         run: cargo build --all-features
       - name: Test
